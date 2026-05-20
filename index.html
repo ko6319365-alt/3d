@@ -95,7 +95,7 @@
             height: 100vh;
             position: relative;
             background: var(--bg-gradient);
-            perspective: 1000px; /* Enable 3D depth */
+            perspective: 1200px; /* Enhanced 3D depth for more pictures */
         }
 
         /* --- Glowing Text --- */
@@ -124,11 +124,11 @@
             position: absolute;
             top: 45%;
             left: 50%;
-            width: 180px;
-            height: 250px;
+            width: 150px; /* Slightly narrower to fit more pictures elegantly */
+            height: 220px;
             transform-style: preserve-3d;
             transform: translate(-50%, -50%) rotateX(-10deg);
-            animation: rotateGallery 20s linear infinite;
+            animation: rotateGallery 25s linear infinite; /* Smoother rotation for 20 images */
         }
 
         @keyframes rotateGallery {
@@ -199,7 +199,7 @@
 
         /* Mobile Adjustments */
         @media (max-width: 600px) {
-            .slider-box { width: 140px; height: 200px; }
+            .slider-box { width: 120px; height: 170px; }
             .text-top { font-size: 1.4rem; }
             .text-bottom { font-size: 1.1rem; }
         }
@@ -211,7 +211,7 @@
 
     <div id="lock-screen">
         <div class="lock-container">
-            <h2>Our Secret Book 💖</h2>
+            <h2>ချစ်သူ့လေးအလှတရား💖</h2>
             <p style="margin-bottom: 1rem; color: #777; font-size: 0.9rem;">Enter password to see magic</p>
             <input type="text" id="password-input" placeholder="Password..." onkeypress="handleKeyPress(event)">
             <button onclick="checkPassword()">Unlock Memories</button>
@@ -225,33 +225,33 @@
         <div class="glowing-text text-top">I love you so much 💖</div>
 
         <div class="slider-box">
-            <span style="transform: rotateY(0deg) translateZ(350px);"><img src="1.jpg"></span>
-            <span style="transform: rotateY(18deg) translateZ(350px);"><img src="2.jpg"></span>
-            <span style="transform: rotateY(36deg) translateZ(350px);"><img src="3.jpg"></span>
-            <span style="transform: rotateY(54deg) translateZ(350px);"><img src="4.jpg"></span>
-            <span style="transform: rotateY(72deg) translateZ(350px);"><img src="5.jpg"></span>
-            <span style="transform: rotateY(90deg) translateZ(350px);"><img src="6.jpg"></span>
-            <span style="transform: rotateY(108deg) translateZ(350px);"><img src="7.jpg"></span>
-            <span style="transform: rotateY(126deg) translateZ(350px);"><img src="8.jpg"></span>
-            <span style="transform: rotateY(144deg) translateZ(350px);"><img src="9.jpg"></span>
-            <span style="transform: rotateY(162deg) translateZ(350px);"><img src="10.jpg"></span>
-            <span style="transform: rotateY(180deg) translateZ(350px);"><img src="11.jpg"></span>
-            <span style="transform: rotateY(198deg) translateZ(350px);"><img src="12.jpg"></span>
-            <span style="transform: rotateY(216deg) translateZ(350px);"><img src="12.jpg"></span>
-            <span style="transform: rotateY(234deg) translateZ(350px);"><img src="14.jpg"></span>
-            <span style="transform: rotateY(252deg) translateZ(350px);"><img src="15.jpg"></span>
-            <span style="transform: rotateY(270deg) translateZ(350px);"><img src="16.jpg"></span>
-            <span style="transform: rotateY(288deg) translateZ(350px);"><img src="17.jpg"></span>
-            <span style="transform: rotateY(306deg) translateZ(350px);"><img src="18.jpg"></span>
-            <span style="transform: rotateY(324deg) translateZ(350px);"><img src="19.jpg"></span>
-            <span style="transform: rotateY(342deg) translateZ(350px);"><img src="20.jpg"></span>
+            <span style="transform: rotateY(0deg) translateZ(380px);"><img src="1.jpg"></span>
+            <span style="transform: rotateY(18deg) translateZ(380px);"><img src="2.jpg"></span>
+            <span style="transform: rotateY(36deg) translateZ(380px);"><img src="3.jpg"></span>
+            <span style="transform: rotateY(54deg) translateZ(380px);"><img src="4.jpg"></span>
+            <span style="transform: rotateY(72deg) translateZ(380px);"><img src="5.jpg"></span>
+            <span style="transform: rotateY(90deg) translateZ(380px);"><img src="6.jpg"></span>
+            <span style="transform: rotateY(108deg) translateZ(380px);"><img src="7.jpg"></span>
+            <span style="transform: rotateY(126deg) translateZ(380px);"><img src="8.jpg"></span>
+            <span style="transform: rotateY(144deg) translateZ(380px);"><img src="9.jpg"></span>
+            <span style="transform: rotateY(162deg) translateZ(380px);"><img src="10.jpg"></span>
+            <span style="transform: rotateY(180deg) translateZ(380px);"><img src="11.jpg"></span>
+            <span style="transform: rotateY(198deg) translateZ(380px);"><img src="12.jpg"></span>
+            <span style="transform: rotateY(216deg) translateZ(380px);"><img src="13.jpg"></span>
+            <span style="transform: rotateY(234deg) translateZ(380px);"><img src="14.jpg"></span>
+            <span style="transform: rotateY(252deg) translateZ(380px);"><img src="15.jpg"></span>
+            <span style="transform: rotateY(270deg) translateZ(380px);"><img src="16.jpg"></span>
+            <span style="transform: rotateY(288deg) translateZ(380px);"><img src="17.jpg"></span>
+            <span style="transform: rotateY(306deg) translateZ(380px);"><img src="18.jpg"></span>
+            <span style="transform: rotateY(324deg) translateZ(380px);"><img src="19.jpg"></span>
+            <span style="transform: rotateY(342deg) translateZ(380px);"><img src="20.jpg"></span>
         </div>
 
         <div class="glowing-text text-bottom">Every chapter is better with you... ✨</div>
     </div>
 
     <script>
-        const CORRECT_PASSWORD = "1.5.2022";
+        const CORRECT_PASSWORD = "ချစ်တယ်";
 
         function handleKeyPress(e) {
             if (e.key === 'Enter') checkPassword();
@@ -292,7 +292,6 @@
             const item = document.createElement('div');
             item.classList.add('floating-item');
 
-            // Randomly generate hearts or love text
             const rand = Math.random();
             if (rand < 0.6) {
                 item.classList.add('heart');
