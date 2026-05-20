@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For My Love</title>
+    <style>
+        :root {
+            --primary-pink: #ff7597;
+            --dark-pink: #e05275;
+            --bg-gradient: linear-gradient(135deg, #111 0%, #000 100%);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            background: #000;
+            color: #fff;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        /* --- Lock Screen --- */
+        #lock-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #ffeef2 0%, #ffd1dc 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.8s ease;
+        }
+
+        .lock-container {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(224, 82, 117, 0.2);
+            text-align: center;
+            max-width: 360px;
+            width: 90%;
+        }
+
+        .lock-container h2 {
+            color: var(--dark-pink);
+            margin-bottom: 1.5rem;
+        }
+
+        .lock-container input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--primary-pink);
+            border-radius: 25px;
+            text-align: center;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            outline: none;
+        }
+
+        .lock-container button {
+            background: var(--primary-pink);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
+        }
+
+        .error-msg {
+            color: #d9534f;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        /* --- Main Content (3D Space) --- */
+        #main-content {
+            display: none;
+            opacity: 0;
+            transition: opacity 1s ease;
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+            background: var(--bg-gradient);
+            perspective: 1000px; /* Enable 3D depth */
+        }
+
+        /* --- Glowing Text --- */
+        .glowing-text {
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            font-family: 'Georgia', serif;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 0 0 10px rgba(255,117,151,0.8), 0 0 20px rgba(255,117,151,0.5);
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .text-top { top: 8%; font-size: 1.8rem; animation: pulse 2s infinite alternate; }
+        .text-bottom { bottom: 8%; font-size: 1.5rem; color: var(--primary-pink); }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.8; }
+            100% { transform: scale(1.05); opacity: 1; }
+        }
+
+        /* --- 3D Floating & Rotating Gallery --- */
+        .slider-box {
+            position: absolute;
+            top: 45%;
+            left: 50%;
+            width: 180px;
+            height: 250px;
+            transform-style: preserve-3d;
+            transform: translate(-50%, -50%) rotateX(-10deg);
+            animation: rotateGallery 20s linear infinite;
+        }
+
+        @keyframes rotateGallery {
+            0% { transform: translate(-50%, -50%) rotateX(-10deg) rotateY(0deg); }
+            100% { transform: translate(-50%, -50%) rotateX(-10deg) rotateY(360deg); }
+        }
+
+        .slider-box span {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            backface-visibility: visible;
+        }
+
+        .slider-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 12px;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 0 20px rgba(255, 117, 151, 0.6);
+        }
+
+        /* --- Floating Hearts & Texts --- */
+        #heart-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 2;
+        }
+
+        .floating-item {
+            position: absolute;
+            bottom: -50px;
+            color: rgba(255, 117, 151, 0.8);
+            animation: floatUp 8s linear infinite;
+            pointer-events: none;
+            text-align: center;
+        }
+
+        .heart { font-size: 1.5rem; }
+        .text-float {
+            font-size: 0.9rem;
+            white-space: nowrap;
+            font-family: 'Georgia', serif;
+            text-shadow: 0 0 5px rgba(255,255,255,0.5);
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) translateX(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% { opacity: 0.8; }
+            90% { opacity: 0.8; }
+            100% {
+                transform: translateY(-110vh) translateX(100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 600px) {
+            .slider-box { width: 140px; height: 200px; }
+            .text-top { font-size: 1.4rem; }
+            .text-bottom { font-size: 1.1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="mySong" src="music.mp3" loop></audio>
+
+    <div id="lock-screen">
+        <div class="lock-container">
+            <h2>Our Secret Book 💖</h2>
+            <p style="margin-bottom: 1rem; color: #777; font-size: 0.9rem;">Enter password to see magic</p>
+            <input type="text" id="password-input" placeholder="Password..." onkeypress="handleKeyPress(event)">
+            <button onclick="checkPassword()">Unlock Memories</button>
+            <div class="error-msg" id="error-message">Oops! Try again love.</div>
+        </div>
+    </div>
+
+    <div id="main-content">
+        <div id="heart-container"></div>
+
+        <div class="glowing-text text-top">I love you so much 💖</div>
+
+        <div class="slider-box">
+            <span style="transform: rotateY(0deg) translateZ(300px);"><img src="1.jpg"></span>
+            <span style="transform: rotateY(36deg) translateZ(300px);"><img src="2.jpg"></span>
+            <span style="transform: rotateY(72deg) translateZ(300px);"><img src="3.jpg"></span>
+            <span style="transform: rotateY(108deg) translateZ(300px);"><img src="4.jpg"></span>
+            <span style="transform: rotateY(144deg) translateZ(300px);"><img src="5.jpg"></span>
+            <span style="transform: rotateY(180deg) translateZ(300px);"><img src="6.jpg"></span>
+            <span style="transform: rotateY(216deg) translateZ(300px);"><img src="7.jpg"></span>
+            <span style="transform: rotateY(252deg) translateZ(300px);"><img src="8.jpg"></span>
+            <span style="transform: rotateY(288deg) translateZ(300px);"><img src="9.jpg"></span>
+            <span style="transform: rotateY(324deg) translateZ(300px);"><img src="10.jpg"></span>
+        </div>
+
+        <div class="glowing-text text-bottom">Every chapter is better with you... ✨</div>
+    </div>
+
+    <script>
+        const CORRECT_PASSWORD = "ချစ်တယ်";
+
+        function handleKeyPress(e) {
+            if (e.key === 'Enter') checkPassword();
+        }
+
+        function checkPassword() {
+            const input = document.getElementById('password-input').value.trim();
+            const error = document.getElementById('error-message');
+            const lockScreen = document.getElementById('lock-screen');
+            const mainContent = document.getElementById('main-content');
+
+            if (input === CORRECT_PASSWORD) {
+                // Play Song
+                const audio = document.getElementById('mySong');
+                if(audio) {
+                    audio.play().catch(err => console.log("Audio play blocked", err));
+                }
+
+                lockScreen.style.opacity = '0';
+                setTimeout(() => {
+                    lockScreen.style.display = 'none';
+                    mainContent.style.display = 'block';
+                    setTimeout(() => {
+                        mainContent.style.opacity = '1';
+                        // Start Floating Elements Loop
+                        setInterval(createFloatingItem, 300);
+                    }, 50);
+                }, 800);
+            } else {
+                error.style.display = 'block';
+            }
+        }
+
+        function createFloatingItem() {
+            const container = document.getElementById('heart-container');
+            if(!container) return;
+
+            const item = document.createElement('div');
+            item.classList.add('floating-item');
+
+            // Randomly generate hearts or love text
+            const rand = Math.random();
+            if (rand < 0.6) {
+                item.classList.add('heart');
+                const hearts = ['❤️', '💖', '💝', '💕', '✨'];
+                item.innerText = hearts[Math.floor(Math.random() * hearts.length)];
+            } else {
+                item.classList.add('text-float');
+                const texts = ['I love you', 'Thae Thae Lay', 'My Angel', 'Always You'];
+                item.innerText = texts[Math.floor(Math.random() * texts.length)];
+            }
+
+            item.style.left = Math.random() * 100 + 'vw';
+            item.style.animationDuration = (Math.random() * 4 + 5) + 's';
+            item.style.fontSize = (Math.random() * 0.8 + 0.8) + 'rem';
+
+            container.appendChild(item);
+
+            setTimeout(() => {
+                item.remove();
+            }, 9000);
+        }
+    </script>
+</body>
+</html>
