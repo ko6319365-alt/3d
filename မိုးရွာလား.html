@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crush Q&A Card</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(180deg, #3a7bd5, #3a6073);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* ပင်မ ကတ်ပြားအိမ်ကြီး Style */
+        .card-container {
+            background: linear-gradient(180deg, #4facfe 0%, #00f2fe 100%);
+            width: 100%;
+            max-width: 400px;
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            text-align: center;
+            border: 3px solid #fff;
+            transition: all 0.4s ease;
+        }
+
+        /* ထိပ်ဆုံးက မေးခွန်းစာသား */
+        .question-title {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #fff;
+            margin-bottom: 12px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            background: rgba(0, 0, 0, 0.15);
+            padding: 8px;
+            border-radius: 10px;
+        }
+
+        /* အလယ်က Minions ဓာတ်ပုံကွက် */
+        .image-frame {
+            width: 100%;
+            height: 180px;
+            border-radius: 15px;
+            overflow: hidden;
+            border: 3px solid #fff;
+            margin-bottom: 15px;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.2);
+        }
+
+        .image-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* မှားရင် ထွက်လာမယ့် စနောက်စာသား */
+        .hint-text {
+            color: #d90429;
+            font-weight: bold;
+            font-size: 1rem;
+            margin-bottom: 15px;
+            min-height: 24px;
+            text-shadow: 0 1px 2px rgba(255,255,255,0.5);
+        }
+
+        /* ခလုတ်များ စီစဉ်မှုစနစ် */
+        .button-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        .game-btn {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #fff;
+            border-radius: 12px;
+            font-size: 1.05rem;
+            font-weight: bold;
+            color: #fff;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+            transition: transform 0.1s, background-color 0.2s;
+            outline: none;
+        }
+
+        .game-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* ခလုတ်တစ်ခုချင်းစီရဲ့ မူလအရောင်များ */
+        .btn-blue { background-color: #2a6fdb; }
+        .btn-purple { background-color: #833ab4; }
+        .btn-pink { background-color: #fd1d1d; }
+        .btn-green { background-color: #00b4d8; }
+
+        /* --- နောက်ဆုံး အောင်မြင်သွားချိန် Screen View --- */
+        .success-view {
+            display: none;
+        }
+
+        /* Music Player Interface */
+        .audio-player-box {
+            background: rgba(255, 255, 255, 0.25);
+            padding: 15px;
+            border-radius: 12px;
+            margin-top: 15px;
+            border: 1px solid rgba(255,255,255,0.4);
+        }
+
+        .audio-desc {
+            font-size: 0.9rem;
+            color: #fff;
+            margin-bottom: 10px;
+            line-height: 1.4;
+            text-align: left;
+        }
+
+        audio {
+            width: 100%;
+            height: 40px;
+            border-radius: 8px;
+        }
+
+        .download-btn {
+            background-color: #fff;
+            color: #2a6fdb;
+            border: none;
+            width: 100%;
+            padding: 12px;
+            border-radius: 12px;
+            font-weight: bold;
+            font-size: 1rem;
+            margin-top: 15px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            transition: all 0.2s;
+        }
+
+        .download-btn:hover {
+            background-color: #f0f0f0;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card-container">
+        <div id="quiz-section">
+            <div class="question-title" id="mainQuestion">အဲ့ဘက်မှာ မိုးရွာလား?</div>
+            
+            <div class="image-frame">
+                <img src="1.jpg" alt="Minions">
+            </div>
+
+            <div class="hint-text" id="errorHint"></div>
+
+            <div class="button-grid" id="btnContainer">
+                <button class="game-btn btn-blue" id="btn0" onclick="handleChoice(0)">မရွာဘူး</button>
+                <button class="game-btn btn-purple" id="btn1" onclick="handleChoice(1)">ရွာတယ်</button>
+                <button class="game-btn btn-pink" id="btn2" onclick="handleChoice(2)">ချစ်တယ်</button>
+                <button class="game-btn btn-green" id="btn3" onclick="handleChoice(3)">မချစ်ဘူး</button>
+            </div>
+        </div>
+
+        <div class="success-view" id="success-section">
+            <div class="question-title">Yayyy.... အဖြေရပါပြီ...💙</div>
+            
+            <div class="image-frame">
+                <img src="1.jpg" alt="Minions Happy">
+            </div>
+
+            <div class="audio-player-box">
+                <div class="audio-desc">
+                    <b>Picked - ချစ်တယ်</b><br>
+                     ချစ်တယ်တဲ့... ပျော်လိုက်တာ မေမေကိုပြောပြီးလာတောင်းခိုင်းမယ်
+                </div>
+                <audio controls src="music.mp3"></audio>
+            </div>
+
+            <button class="download-btn" onclick="alert('Card Downloaded Successfully!')">Download Card</button>
+        </div>
+    </div>
+
+    <script>
+        // မူလ ခလုတ်ဒေတာစာရင်း
+        let buttonsData = [
+            { id: 0, text: "မရွာဘူး", isRight: false, class: "btn-blue" },
+            { id: 1, text: "ရွာတယ်", isRight: false, class: "btn-purple" },
+            { id: 2, text: "ချစ်တယ်", isRight: true, class: "btn-pink" },
+            { id: 3, text: "မချစ်ဘူး", isRight: false, class: "btn-green" }
+        ];
+
+        // မှားယွင်းစွာနှိပ်မိချိန် ထွက်လာမည့် စနောက်စာသားလှည့်ပတ်မှုများ
+        const funnyHints = [
+            "မဟုတ်သေးဘူးနော် မင်းရွေးတာ ရွေးတာ ❌",
+            "အဖြေမှန် ပြန်ရွေးပါဦး ဟီးးး 😜",
+            "တလွဲတွေ လျှောက်နှိပ်နေပြန်ပြီ 🤖",
+            "မရပါဘူးနော် သေသေချာချာ ပြန်ကြည့်ပါဦး 🔍"
+        ];
+
+        function renderButtons() {
+            const container = document.getElementById('btnContainer');
+            container.innerHTML = ''; // ယခင်ခလုတ်ဟောင်းများ ရှင်းထုတ်ခြင်း
+
+            buttonsData.forEach((btn, index) => {
+                const buttonHtml = `<button class="game-btn ${btn.class}" onclick="handleChoice(${btn.id})">${btn.text}</button>`;
+                container.innerHTML += buttonHtml;
+            });
+        }
+
+        // ခလုတ်နှိပ်မှုများအား စစ်ဆေးသည့် Logic စနစ်
+        function handleChoice(buttonId) {
+            // နှိပ်လိုက်သော ခလုတ်၏ သဘာဝကို ရှာဖွေခြင်း
+            const selectedBtn = buttonsData.find(b => b.id === buttonId);
+
+            if (selectedBtn.isRight) {
+                // "ချစ်တယ်" (အဖြေမှန်) ဖြစ်ပါက Success Screen သို့ တိုက်ရိုက်ကူးပြောင်းမည်
+                document.getElementById('quiz-section').style.display = 'none';
+                document.getElementById('success-section').style.display = 'block';
+                
+                // အော်တို သီချင်းဖွင့်ရန် ကြိုးစားခြင်း
+                const audio = document.querySelector('audio');
+                if(audio) audio.play().catch(e => console.log("Autoplay blocked"));
+            } else {
+                // အဖြေမှားပါက စာသားပြောင်းပြီး ခလုတ်များကို နေရာအစီအစဉ် ရောမွှေပစ်မည် (Shuffle)
+                const randomHint = funnyHints[Math.floor(Math.random() * funnyHints.length)];
+                document.getElementById('errorHint').innerText = randomHint;
+
+                // Fisher-Yates Shuffle Algorithm ဖြင့် ခလုတ်များကို ရောမွှေခြင်း
+                for (let i = buttonsData.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [buttonsData[i], buttonsData[j]] = [buttonsData[j], buttonsData[i]];
+                }
+
+                // မျက်နှာပြင်ပေါ်တွင် ခလုတ်အသစ်များကို ပြန်လည်ရေးဆွဲခြင်း
+                renderButtons();
+            }
+        }
+    </script>
+</body>
+</html>
