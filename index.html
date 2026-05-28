@@ -3,309 +3,250 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>For My Love</title>
+    <title>Crush Q&A Card</title>
     <style>
-        :root {
-            --primary-pink: #ff7597;
-            --dark-pink: #e05275;
-            --bg-gradient: linear-gradient(135deg, #111 0%, #000 100%);
-        }
-
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Roboto, sans-serif;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         }
 
         body {
-            background: #000;
-            color: #fff;
+            background: linear-gradient(180deg, #3a7bd5, #3a6073);
             min-height: 100vh;
-            overflow: hidden;
-        }
-
-        /* --- Lock Screen --- */
-        #lock-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #ffeef2 0%, #ffd1dc 100%);
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
-            z-index: 9999;
-            transition: opacity 0.8s ease;
+            padding: 20px;
         }
 
-        .lock-container {
-            background: rgba(255, 255, 255, 0.9);
-            padding: 2.5rem;
+        /* ပင်မ ကတ်ပြားအိမ်ကြီး Style */
+        .card-container {
+            background: linear-gradient(180deg, #4facfe 0%, #00f2fe 100%);
+            width: 100%;
+            max-width: 400px;
             border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(224, 82, 117, 0.2);
+            padding: 24px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
             text-align: center;
-            max-width: 360px;
-            width: 90%;
+            border: 3px solid #fff;
+            transition: all 0.4s ease;
         }
 
-        .lock-container h2 {
-            color: var(--dark-pink);
-            margin-bottom: 1.5rem;
+        /* ထိပ်ဆုံးက မေးခွန်းစာသား */
+        .question-title {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #fff;
+            margin-bottom: 12px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            background: rgba(0, 0, 0, 0.15);
+            padding: 8px;
+            border-radius: 10px;
         }
 
-        .lock-container input {
+        /* အလယ်က Minions ဓာတ်ပုံကွက် */
+        .image-frame {
+            width: 100%;
+            height: 180px;
+            border-radius: 15px;
+            overflow: hidden;
+            border: 3px solid #fff;
+            margin-bottom: 15px;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.2);
+        }
+
+        .image-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* မှားရင် ထွက်လာမယ့် စနောက်စာသား */
+        .hint-text {
+            color: #d90429;
+            font-weight: bold;
+            font-size: 1rem;
+            margin-bottom: 15px;
+            min-height: 24px;
+            text-shadow: 0 1px 2px rgba(255,255,255,0.5);
+        }
+
+        /* ခလုတ်များ စီစဉ်မှုစနစ် */
+        .button-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        .game-btn {
             width: 100%;
             padding: 12px;
-            border: 2px solid var(--primary-pink);
-            border-radius: 25px;
-            text-align: center;
-            font-size: 1.1rem;
-            margin-bottom: 1rem;
+            border: 2px solid #fff;
+            border-radius: 12px;
+            font-size: 1.05rem;
+            font-weight: bold;
+            color: #fff;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+            transition: transform 0.1s, background-color 0.2s;
             outline: none;
         }
 
-        .lock-container button {
-            background: var(--primary-pink);
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 25px;
-            font-size: 1rem;
-            cursor: pointer;
-            font-weight: bold;
-            width: 100%;
+        .game-btn:active {
+            transform: scale(0.98);
         }
 
-        .error-msg {
-            color: #d9534f;
+        /* ခလုတ်တစ်ခုချင်းစီရဲ့ မူလအရောင်များ */
+        .btn-blue { background-color: #2a6fdb; }
+        .btn-purple { background-color: #833ab4; }
+        .btn-pink { background-color: #fd1d1d; }
+        .btn-green { background-color: #00b4d8; }
+
+        /* --- နောက်ဆုံး အောင်မြင်သွားချိန် Screen View --- */
+        .success-view {
+            display: none;
+        }
+
+        /* Music Player Interface */
+        .audio-player-box {
+            background: rgba(255, 255, 255, 0.25);
+            padding: 15px;
+            border-radius: 12px;
+            margin-top: 15px;
+            border: 1px solid rgba(255,255,255,0.4);
+        }
+
+        .audio-desc {
             font-size: 0.9rem;
-            margin-top: 0.5rem;
-            display: none;
-        }
-
-        /* --- Main Content Space --- */
-        #main-content {
-            display: none;
-            opacity: 0;
-            transition: opacity 1s ease;
-            width: 100vw;
-            height: 100vh;
-            position: relative;
-            background: var(--bg-gradient);
-        }
-
-        /* --- Glowing Text --- */
-        .glowing-text {
-            position: absolute;
-            width: 100%;
-            text-align: center;
-            font-family: 'Georgia', serif;
-            font-weight: bold;
             color: #fff;
-            text-shadow: 0 0 10px rgba(255,117,151,0.8), 0 0 20px rgba(255,117,151,0.5);
-            pointer-events: none;
-            z-index: 10;
+            margin-bottom: 10px;
+            line-height: 1.4;
+            text-align: left;
         }
 
-        .text-top { top: 6%; font-size: 1.8rem; animation: pulse 2s infinite alternate; }
-        .text-bottom { bottom: 6%; font-size: 1.3rem; color: var(--primary-pink); }
-
-        @keyframes pulse {
-            0% { transform: scale(1); opacity: 0.8; }
-            100% { transform: scale(1.05); opacity: 1; }
-        }
-
-        /* --- Heart Gallery Container --- */
-        .heart-gallery {
-            position: absolute;
-            top: 48%;
-            left: 50%;
-            width: 320px;
-            height: 320px;
-            transform: translate(-50%, -50%);
-        }
-
-        /* --- Photo Styles & Falling Animation --- */
-        .photo-node {
-            position: absolute;
-            width: 60px;
-            height: 60px;
-            object-fit: cover;
-            border-radius: 8px;
-            border: 2px solid #fff;
-            box-shadow: 0 4px 10px rgba(255, 117, 151, 0.4);
-            opacity: 0;
-            /* မျက်နှာပြင်အပေါ်ကနေ တစ်ပုံချင်းစီ သက်မှတ်ထားတဲ့ အသည်းပုံနေရာကို ကျလာမယ့် Animation */
-            animation: fallToHeart 2.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-        }
-
-        @keyframes fallToHeart {
-            0% {
-                top: -600px; /* မျက်နှာပြင်ရဲ့ အပေါ်ဆုံး အပြင်ကနေ စကျမည် */
-                left: calc(50% - 30px);
-                transform: scale(0.5) rotate(720deg);
-                opacity: 0;
-            }
-            30% {
-                opacity: 1;
-            }
-            100% {
-                /* JavaScript ကနေ လှမ်းတွက်ပေးမယ့် Target နေရာတွေဆီ ရောက်သွားမည် */
-                top: var(--target-y);
-                left: var(--target-x);
-                transform: scale(1) rotate(var(--target-rot));
-                opacity: 1;
-            }
-        }
-
-        /* --- Background Floating Hearts --- */
-        #heart-bg-container {
-            position: absolute;
-            top: 0;
-            left: 0;
+        audio {
             width: 100%;
-            height: 100%;
-            pointer-events: none;
-            overflow: hidden;
-            z-index: 1;
+            height: 40px;
+            border-radius: 8px;
         }
 
-        .bg-heart {
-            position: absolute;
-            bottom: -30px;
-            color: rgba(255, 117, 151, 0.4);
-            animation: floatUp 6s linear infinite;
+        .download-btn {
+            background-color: #fff;
+            color: #2a6fdb;
+            border: none;
+            width: 100%;
+            padding: 12px;
+            border-radius: 12px;
+            font-weight: bold;
+            font-size: 1rem;
+            margin-top: 15px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            transition: all 0.2s;
         }
 
-        @keyframes floatUp {
-            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
-            10% { opacity: 0.6; }
-            90% { opacity: 0.6; }
-            100% { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
-        }
-
-        /* Mobile Adjustments */
-        @media (max-width: 600px) {
-            .heart-gallery { width: 260px; height: 260px; }
-            .photo-node { width: 48px; height: 48px; }
-            .text-top { font-size: 1.4rem; }
-            .text-bottom { font-size: 1rem; }
+        .download-btn:hover {
+            background-color: #f0f0f0;
+            transform: translateY(-2px);
         }
     </style>
 </head>
 <body>
 
-    <audio id="mySong" src="music.mp3" loop></audio>
+    <div class="card-container">
+        <div id="quiz-section">
+            <div class="question-title" id="mainQuestion">အဲ့ဘက်မှာ မိုးရွာလား?</div>
+            
+            <div class="image-frame">
+                <img src="1.jpg" alt="Minions">
+            </div>
 
-    <div id="lock-screen">
-        <div class="lock-container">
-            <h2>Our Secret Key 💖</h2>
-            <p style="margin-bottom: 1rem; color: #777; font-size: 0.9rem;">Enter password to see magic</p>
-            <input type="text" id="password-input" placeholder="Password..." onkeypress="handleKeyPress(event)">
-            <button onclick="checkPassword()">Unlock Memories</button>
-            <div class="error-msg" id="error-message">Oops! Try again love.</div>
+            <div class="hint-text" id="errorHint"></div>
+
+            <div class="button-grid" id="btnContainer">
+                <button class="game-btn btn-blue" id="btn0" onclick="handleChoice(0)">မရွာဘူး</button>
+                <button class="game-btn btn-purple" id="btn1" onclick="handleChoice(1)">ရွာတယ်</button>
+                <button class="game-btn btn-pink" id="btn2" onclick="handleChoice(2)">ချစ်တယ်</button>
+                <button class="game-btn btn-green" id="btn3" onclick="handleChoice(3)">မချစ်ဘူး</button>
+            </div>
+        </div>
+
+        <div class="success-view" id="success-section">
+            <div class="question-title">Yayyy.... အဖြေရပါပြီ...💙</div>
+            
+            <div class="image-frame">
+                <img src="1.jpg" alt="Minions Happy">
+            </div>
+
+            <div class="audio-player-box">
+                <div class="audio-desc">
+                    <b>Picked - ချစ်တယ်</b><br>
+                     ချစ်တယ်တဲ့... ပျော်လိုက်တာ မေမေကိုပြောပြီးလာတောင်းခိုင်းမယ်
+                </div>
+                <audio controls src="music.mp3"></audio>
+            </div>
+
+            <button class="download-btn" onclick="alert('Card Downloaded Successfully!')">Download Card</button>
         </div>
     </div>
 
-    <div id="main-content">
-        <div id="heart-bg-container"></div>
-
-        <div class="glowing-text text-top">I love you so much 💖</div>
-
-        <div class="heart-gallery" id="photo-area"></div>
-
-        <div class="glowing-text text-bottom">You are my whole world... ✨</div>
-    </div>
-
     <script>
-        const CORRECT_PASSWORD = "1.5.2022";
-
-        // ဓာတ်ပုံ ၂၀ ကို အသည်းပုံသဏ္ဌာန်ဖြစ်အောင် (X, Y) နေရာ တိကျစွာ တွက်ချက်ထားသော Matrix (Percentage ဖြင့်)
-        const heartCoordinates = [
-            {x: 50, y: 25, r: 0},   // ထိပ်အလယ်ဆုံမှတ်
-            {x: 65, y: 15, r: 10},  {x: 35, y: 15, r: -10},
-            {x: 80, y: 15, r: 20},  {x: 20, y: 15, r: -20},
-            {x: 93, y: 25, r: 35},  {x: 7,  y: 25, r: -35},
-            {x: 96, y: 42, r: 20},  {x: 4,  y: 42, r: -20},
-            {x: 90, y: 58, r: -10}, {x: 10, y: 58, r: 10},
-            {x: 78, y: 72, r: -25}, {x: 22, y: 72, r: 25},
-            {x: 64, y: 84, r: -40}, {x: 36, y: 84, r: 40},
-            {x: 50, y: 95, r: 0},   // အောက်ခြေချွန်မှတ်
-            // အတွင်းပိုင်း အသည်းပုံထပ်ဖြည့်ချက်များ
-            {x: 50, y: 48, r: 5},   {x: 35, y: 42, r: -15},
-            {x: 65, y: 42, r: 15},  {x: 50, y: 70, r: -5}
+        // မူလ ခလုတ်ဒေတာစာရင်း
+        let buttonsData = [
+            { id: 0, text: "မရွာဘူး", isRight: false, class: "btn-blue" },
+            { id: 1, text: "ရွာတယ်", isRight: false, class: "btn-purple" },
+            { id: 2, text: "ချစ်တယ်", isRight: true, class: "btn-pink" },
+            { id: 3, text: "မချစ်ဘူး", isRight: false, class: "btn-green" }
         ];
 
-        function handleKeyPress(e) {
-            if (e.key === 'Enter') checkPassword();
+        // မှားယွင်းစွာနှိပ်မိချိန် ထွက်လာမည့် စနောက်စာသားလှည့်ပတ်မှုများ
+        const funnyHints = [
+            "မဟုတ်သေးဘူးနော် မင်းရွေးတာ ရွေးတာ ❌",
+            "အဖြေမှန် ပြန်ရွေးပါဦး ဟီးးး 😜",
+            "တလွဲတွေ လျှောက်နှိပ်နေပြန်ပြီ 🤖",
+            "မရပါဘူးနော် သေသေချာချာ ပြန်ကြည့်ပါဦး 🔍"
+        ];
+
+        function renderButtons() {
+            const container = document.getElementById('btnContainer');
+            container.innerHTML = ''; // ယခင်ခလုတ်ဟောင်းများ ရှင်းထုတ်ခြင်း
+
+            buttonsData.forEach((btn, index) => {
+                const buttonHtml = `<button class="game-btn ${btn.class}" onclick="handleChoice(${btn.id})">${btn.text}</button>`;
+                container.innerHTML += buttonHtml;
+            });
         }
 
-        function checkPassword() {
-            const input = document.getElementById('password-input').value.trim();
-            const error = document.getElementById('error-message');
-            const lockScreen = document.getElementById('lock-screen');
-            const mainContent = document.getElementById('main-content');
+        // ခလုတ်နှိပ်မှုများအား စစ်ဆေးသည့် Logic စနစ်
+        function handleChoice(buttonId) {
+            // နှိပ်လိုက်သော ခလုတ်၏ သဘာဝကို ရှာဖွေခြင်း
+            const selectedBtn = buttonsData.find(b => b.id === buttonId);
 
-            if (input === CORRECT_PASSWORD) {
-                // Play Song
-                const audio = document.getElementById('mySong');
-                if(audio) {
-                    audio.play().catch(err => console.log("Audio play blocked", err));
+            if (selectedBtn.isRight) {
+                // "ချစ်တယ်" (အဖြေမှန်) ဖြစ်ပါက Success Screen သို့ တိုက်ရိုက်ကူးပြောင်းမည်
+                document.getElementById('quiz-section').style.display = 'none';
+                document.getElementById('success-section').style.display = 'block';
+                
+                // အော်တို သီချင်းဖွင့်ရန် ကြိုးစားခြင်း
+                const audio = document.querySelector('audio');
+                if(audio) audio.play().catch(e => console.log("Autoplay blocked"));
+            } else {
+                // အဖြေမှားပါက စာသားပြောင်းပြီး ခလုတ်များကို နေရာအစီအစဉ် ရောမွှေပစ်မည် (Shuffle)
+                const randomHint = funnyHints[Math.floor(Math.random() * funnyHints.length)];
+                document.getElementById('errorHint').innerText = randomHint;
+
+                // Fisher-Yates Shuffle Algorithm ဖြင့် ခလုတ်များကို ရောမွှေခြင်း
+                for (let i = buttonsData.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [buttonsData[i], buttonsData[j]] = [buttonsData[j], buttonsData[i]];
                 }
 
-                lockScreen.style.opacity = '0';
-                setTimeout(() => {
-                    lockScreen.style.display = 'none';
-                    mainContent.style.display = 'block';
-                    setTimeout(() => {
-                        mainContent.style.opacity = '1';
-                        // ဓာတ်ပုံများ တစ်ပုံပြီးတစ်ပုံ ကျလာစေရန် စတင်ခေါ်ယူခြင်း
-                        generateFallingPhotos();
-                        // နောက်ခံ အသည်းပုံအသေးလေးများ ပျံတက်စေရန်
-                        setInterval(createBgHeart, 400);
-                    }, 50);
-                }, 800);
-            } else {
-                error.style.display = 'block';
+                // မျက်နှာပြင်ပေါ်တွင် ခလုတ်အသစ်များကို ပြန်လည်ရေးဆွဲခြင်း
+                renderButtons();
             }
-        }
-
-        function generateFallingPhotos() {
-            const area = document.getElementById('photo-area');
-            
-            // ပုံ ၂၀ ကို တစ်ပုံချင်းစီ Delay (အချိန်ခြားပြီး) ကျလာအောင် လုပ်ခြင်း
-            for (let i = 0; i < 20; i++) {
-                setTimeout(() => {
-                    const img = document.createElement('img');
-                    img.src = `${i + 1}.jpg`; // 1.jpg မှ 20.jpg အထိ ပုံများကို ခေါ်မည်
-                    img.classList.add('photo-node');
-                    
-                    // CSS Variables ထဲသို့ ကျရမည့် Target (X, Y) နေရာများ ထည့်ပေးခြင်း
-                    const coord = heartCoordinates[i];
-                    img.style.setProperty('--target-x', `calc(${coord.x}% - 30px)`);
-                    img.style.setProperty('--target-y', `calc(${coord.y}% - 30px)`);
-                    img.style.setProperty('--target-rot', `${coord.r}deg`);
-                    
-                    area.appendChild(img);
-                }, i * 350); // တစ်ပုံနှင့်တစ်ပုံ ၀.၃၅ စက္ကန့်စီ ခြားပြီး ကျလာမည်
-            }
-        }
-
-        function createBgHeart() {
-            const container = document.getElementById('heart-bg-container');
-            if(!container) return;
-            const heart = document.createElement('div');
-            heart.classList.add('bg-heart');
-            const items = ['❤️', '💖', '💕', '🌸'];
-            heart.innerText = items[Math.floor(Math.random() * items.length)];
-            heart.style.left = Math.random() * 100 + 'vw';
-            heart.style.animationDuration = (Math.random() * 3 + 4) + 's';
-            heart.style.fontSize = (Math.random() * 1 + 0.8) + 'rem';
-            container.appendChild(heart);
-            setTimeout(() => heart.remove(), 6000);
         }
     </script>
 </body>
